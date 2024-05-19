@@ -9,11 +9,52 @@
 		{% tailwind_css %}
 	</head>
 
-	<body class="bg-gray-50 font-serif leading-normal tracking-normal">
-		<div class="container mx-auto">
-			<section class="flex items-center justify-center h-screen">
-				<h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-			</section>
-		</div>
-	</body>
+<body class="bg-gray-100">
+
+<nav class="bg-gray-800 p-4">
+    <div class="container mx-auto flex flex-wrap items-center justify-between">
+        <div class="flex items-center flex-shrink-0 text-white mr-6">
+            <span class="font-semibold text-xl tracking-tight">Jakub Sopel</span>
+        </div>
+        <div class="block lg:hidden">
+            <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-400 border-gray-400 hover:text-white hover:border-white">
+                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Menu</title>
+                    <path d="M0 3h20v2H0V3zm0 5h20v2H0V8zm0 5h20v2H0v-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block" id="nav-content">
+            <div class="text-sm lg:flex-grow">
+                <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-gray-400 hover:text-white mr-4">
+                    Home
+                </a>
+                <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-gray-400 hover:text-white mr-4">
+                    Your profile
+                </a>
+                <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-gray-400 hover:text-white">
+                    Competitions
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mx-auto mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script>
+    document.getElementById('nav-toggle').addEventListener('click', function () {
+        var navContent = document.getElementById('nav-content');
+        if (navContent.classList.contains('hidden')) {
+            navContent.classList.remove('hidden');
+        } else {
+            navContent.classList.add('hidden');
+        }
+    });
+</script>
+
+</body>
 </html>

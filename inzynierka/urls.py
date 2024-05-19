@@ -21,5 +21,5 @@ from wca import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
-    path("", views.home, name="home"),
+    path("", views.PersonsListView.as_view(), name="home"),
 ]
