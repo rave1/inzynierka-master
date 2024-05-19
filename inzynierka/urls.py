@@ -16,10 +16,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from wca import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
-    path("", views.PersonsListView.as_view(), name="home"),
+    path("", include("wca.urls")),
 ]

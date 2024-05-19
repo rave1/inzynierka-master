@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-4">
+    <div class="bg-white p-6 rounded shadow">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <svg class="h-12 w-12 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 0v24H0V0h24z" fill="none"/>
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <div class="ml-4">
+                <div class="text-lg font-medium text-gray-900">ID: {{ person.id }}</div>
+                <div class="text-sm text-gray-500">Name: {{ person.name }}</div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="text-sm text-gray-500"><strong>test:</strong> {{ person.subid }}</div>
+            <div class="text-sm text-gray-500"><strong>Country ID:</strong> {{ person.countryid }}</div>
+            <div class="text-sm text-gray-500"><strong>Gender:</strong> {{ person.gender }}</div>
+        </div>
+        <div class="mt-4">
+            <h2 class="text-lg font-medium text-gray-900">Competitions</h2>
+            <ul class="list-disc pl-5">
+                {% for competition, results in competition_results.items %}
+                    <li class="mb-4">
+                        <h3 class="text-teal-600 hover:text-teal-800 font-bold">{{ competition.name }}</h3>
+                        <span class="text-gray-600">{{ competition.year }}/{{ competition.month }}/{{ competition.day }}</span>
+                        <table class="min-w-full bg-white border border-gray-200 mt-2">
+                            <thead>
+                                <tr>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Event</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Round Type</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Position</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Best</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Average</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Record (Single)</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left">Record (Average)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in results %}
+                                <tr class="hover:bg-gray-100">
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.eventid }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.roundtypeid }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.pos }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.best }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.average }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.regionalsinglerecord }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ result.regionalaveragerecord }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </li>
+                {% empty %}
+                    <li class="text-red-500">No competitions found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'persons_list' %}" class="px-3 py-1 bg-teal-500 text-white rounded hover:bg-teal-700">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
