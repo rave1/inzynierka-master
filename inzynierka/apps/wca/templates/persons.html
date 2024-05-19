@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-4">
+    <form method="get" action="" class="mb-4">
+        <div class="flex items-center border-b border-b-2 border-teal-500 py-2">
+            <input type="text" name="q" placeholder="Search for names..." value="{{ query|default_if_none:'' }}" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none">
+            <button type="submit" class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
+                Search
+            </button>
+        </div>
+    </form>
+
+    <ul class="space-y-4">
+        {% for person in page_obj %}
+        <li class="flex items-center bg-white p-4 rounded shadow">
+            <div class="flex-shrink-0">
+                <svg class="h-10 w-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 0v24H0V0h24z" fill="none"/>
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <div class="ml-4">
+                <div class="text-lg font-medium text-gray-900">ID: {{ person.id }}</div>
+                <div class="text-sm text-gray-500">Name: {{ person.name }}</div>
+            </div>
+        </li>
+        {% empty %}
+        <li class="py-2 text-red-500">No persons found.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination mt-8">
+        <div class="flex justify-center items-center space-x-2">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">previous</a>
+            {% endif %}
+
+            <span class="px-3 py-1 bg-blue-200 text-blue-700 rounded">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">last &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
