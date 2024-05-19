@@ -13,17 +13,19 @@
 
     <ul class="space-y-4">
         {% for person in page_obj %}
-        <li class="flex items-center bg-white p-4 rounded shadow">
-            <div class="flex-shrink-0">
-                <svg class="h-10 w-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 0v24H0V0h24z" fill="none"/>
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-            </div>
-            <div class="ml-4">
-                <div class="text-lg font-medium text-gray-900">ID: {{ person.id }}</div>
-                <div class="text-sm text-gray-500">Name: {{ person.name }}</div>
-            </div>
+        <li class="flex items-center bg-white p-4 rounded shadow hover:bg-gray-100 transition duration-200">
+            <a href="{% url 'person_detail' person.id %}" class="flex items-center w-full">
+                <div class="flex-shrink-0">
+                    <svg class="h-10 w-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 0v24H0V0h24z" fill="none"/>
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <div class="text-lg font-medium text-gray-900">ID: {{ person.id }}</div>
+                    <div class="text-sm text-gray-500">Name: {{ person.name }}</div>
+                </div>
+            </a>
         </li>
         {% empty %}
         <li class="py-2 text-red-500">No persons found.</li>
