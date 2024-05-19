@@ -7,6 +7,10 @@ RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
     build-essential
 
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs
+
 # Set the working directory in the container
 WORKDIR /code
 
