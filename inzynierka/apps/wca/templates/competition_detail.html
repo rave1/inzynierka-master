@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <div class="bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-teal-600 mb-6">{{ competition.name }}</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+                <p class="text-gray-700"><strong>City:</strong> {{ competition.cityname }}</p>
+                <p class="text-gray-700"><strong>Country:</strong> {{ competition.countryid }}</p>
+                <p class="text-gray-700"><strong>Date:</strong> {{ competition.year }}/{{ competition.month }}/{{ competition.day }}</p>
+                {% if competition.endyear and competition.endmonth and competition.endday %}
+                    <p class="text-gray-700"><strong>End Date:</strong> {{ competition.endyear }}/{{ competition.endmonth }}/{{ competition.endday }}</p>
+                {% endif %}
+                <p class="text-gray-700"><strong>Venue:</strong> 
+                    {% if competition.venue_external_url %}
+                        <a href="{{ competition.venue_external_url }}" class="text-teal-600 hover:text-teal-800">{{ competition.venue }}</a>
+                    {% else %}
+                        {{ competition.venue }}
+                    {% endif %}
+                </p>
+                <p class="text-gray-700"><strong>Venue Address:</strong> {{ competition.venueaddress }}</p>
+                {% if competition.venuedetails %}
+                    <p class="text-gray-700"><strong>Venue Details:</strong> {{ competition.venuedetails }}</p>
+                {% endif %}
+            </div>
+            <div>
+                {% if competition.information %}
+                    <p class="text-gray-700"><strong>Information:</strong> {{ competition.information }}</p>
+                {% endif %}
+                {% if formatted_event_specs %}
+                    <p class="text-gray-700"><strong>Event Specs:</strong></p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white">
+                            <thead>
+                                <tr>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left text-gray-600">Event</th>
+                                    <th class="py-2 px-4 border-b border-gray-200 text-left text-gray-600">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event, description in formatted_event_specs.items %}
+                                <tr class="hover:bg-gray-100">
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ event }}</td>
+                                    <td class="py-2 px-4 border-b border-gray-200">{{ description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+                {% if wcadelegates %}
+                    <p class="text-gray-700"><strong>WCA Delegate:</strong>
+                        {% for delegate in wcadelegates %}
+                            <a href="mailto:{{ delegate.email }}" class="text-teal-600 hover:text-teal-800">{{ delegate.name }}</a>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                {% if organisers %}
+                    <p class="text-gray-700"><strong>Organiser:</strong>
+                        {% for organiser in organisers %}
+                            <a href="mailto:{{ organiser.email }}" class="text-teal-600 hover:text-teal-800">{{ organiser.name }}</a>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                {% if competition.external_website %}
+                    <p class="text-gray-700"><strong>External Website:</strong> 
+                        <a href="{{ competition.external_website }}" class="text-teal-600 hover:text-teal-800">{{ competition.external_website }}</a>
+                    </p>
+                {% else %}
+                    <p class="text-gray-700"><strong>External Website:</strong>
+                        <span class="line-through text-gray-400 cursor-not-allowed">Unavailable</span>
+                    </p>
+                {% endif %}
+                {% if formatted_coordinates %}
+                    <p class="text-gray-700"><strong>Coordinates:</strong> {{ formatted_coordinates }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-6">
+            <a href="{% url 'competition_results' competition.id %}" class="inline-block px-6 py-2 bg-teal-500 text-white rounded hover:bg-teal-700">
+                View Results
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
