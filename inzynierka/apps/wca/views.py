@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
 from wca.models import Persons, Competitions, Results
+from django.http import JsonResponse
 
 
 def home(request):
@@ -197,3 +198,80 @@ class CompetitionResultsView(ListView):
         context["competition"] = competition
         context["grouped_results"] = grouped_results
         return context
+
+
+# def results_data(request, competition_id):
+#     results = Results.objects.filter(competitionid=competition_id)
+
+#     event_data = {}
+#     for result in results:
+#         event = result.eventid
+#         if event not in event_data:
+#             event_data[event] = {"labels": [], "best": [], "average": []}
+#         event_data[event]["labels"].append(result.personname)
+#         event_data[event]["best"].append(
+#             result.best / 100.0
+#         )  # Assuming 'best' is stored in centiseconds
+#         event_data[event]["average"].append(
+#             result.average / 100.0
+#         )  # Assuming 'average' is stored in centiseconds
+
+#     formatted_data = {"datasets": []}
+#     for event, data in event_data.items():
+#         formatted_data["datasets"].append(
+#             {
+#                 "label": f"{event} - Best",
+#                 "data": data["best"],
+#                 "backgroundColor": "rgba(54, 162, 235, 0.2)",
+#                 "borderColor": "rgba(54, 162, 235, 1)",
+#                 "borderWidth": 1,
+#             }
+#         )
+#         formatted_data["datasets"].append(
+#             {
+#                 "label": f"{event} - Average",
+#                 "data": data["average"],
+#                 "backgroundColor": "rgba(255, 99, 132, 0.2)",
+#                 "borderColor": "rgba(255, 99, 132, 1)",
+#                 "borderWidth": 1,
+#             }
+#         )
+
+#     formatted_data["labels"] = (
+#         list(event_data.values())[0]["labels"] if event_data else []
+#     )
+
+
+#     return JsonResponse(formatted_data)
+def format_time(centiseconds):
+    minutes = centiseconds // 6000
+    seconds = (centiseconds % 6000) // 100
+    centis = centiseconds % 100
+    return f"{minutes}:{seconds:02}.{centis:02}"
+
+
+def results_data(request, competition_id):
+    results = Results.objects.filter(competitionid=competition_id)
+
+    event_data = {}
+    for result in results:
+        event = result.eventid
+        if event not in event_data:
+            event_data[event] = {
+                "labels": [],
+                "best": [],
+                "average": [],
+                "raw_best": [],
+                "raw_average": [],
+            }
+        event_data[event]["labels"].append(result.personname)
+        event_data[event]["best"].append(format_time(result.best))
+        event_data[event]["average"].append(format_time(result.average))
+        event_data[event]["raw_best"].append(result.best / 100.0)
+        event_data[event]["raw_average"].append(result.average / 100.0)
+
+    for event in event_data:
+        event_data[event]["min_best"] = min(event_data[event]["raw_best"])
+        event_data[event]["min_average"] = min(event_data[event]["raw_average"])
+
+    return JsonResponse(event_data)
