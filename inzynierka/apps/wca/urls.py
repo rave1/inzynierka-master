@@ -15,4 +15,9 @@ urlpatterns = [
         views.CompetitionResultsView.as_view(),
         name="competition_results",
     ),
+    path(
+        "competitions/<str:competition_id>/results/data/",
+        views.results_data,
+        name="results_data",
+    ),
 ]
