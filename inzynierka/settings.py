@@ -46,7 +46,36 @@ INSTALLED_APPS = [
     "tailwind",
     "theme",
     "django_browser_reload",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "crispy_forms",
+    "crispy_tailwind",
+    "django_extensions",
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+LOGIN_REDIRECT_URL = "/profile"
+LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_FORMS = {
+    "signup": "wca.forms.CustomSignupForm",
+}
+# Add email backend settings if needed
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -57,7 +86,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
+
 TAILWIND_APP_NAME = "theme"
 ROOT_URLCONF = "inzynierka.urls"
 

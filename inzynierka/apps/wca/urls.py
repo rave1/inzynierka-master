@@ -20,4 +20,5 @@ urlpatterns = [
         views.results_data,
         name="results_data",
     ),
+    path("profile/", views.profile, name="profile"),
 ]
