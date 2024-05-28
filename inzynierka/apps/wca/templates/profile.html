@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <div class="bg-white p-8 rounded-lg shadow-md">
+        <h2 class="text-3xl font-bold mb-6">Hello {{request.user}}!</h2>
+
+        <div class="mb-6 text-left">
+            <button id="edit-profile-btn" class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-opacity-50 transition duration-300 ease-in-out">
+                Edit Profile
+            </button>
+        </div>
+
+        <form id="edit-profile-form" method="post" class="hidden bg-gray-50 p-6 rounded-lg shadow-inner">
+            {% csrf_token %}
+            {% comment %} {{ user_form|crispy }} {% endcomment %}
+            {{ profile_form|crispy }}
+            <button type="submit" class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded mt-4">Submit</button>
+        </form>
+
+        <h3 class="text-2xl font-semibold mt-10">Competition Results</h3>
+        {% if results %}
+        <div class="overflow-x-auto mt-6">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-3 px-6 border-b border-gray-200 text-left">Event</th>
+                        <th class="py-3 px-6 border-b border-gray-200 text-left">Competition</th>
+                        <th class="py-3 px-6 border-b border-gray-200 text-left">Best Time</th>
+                        <th class="py-3 px-6 border-b border-gray-200 text-left">Average Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="py-3 px-6 border-b border-gray-200">{{ result.eventid }}</td>
+                        <td class="py-3 px-6 border-b border-gray-200">
+                            <a href="{% url 'competition_detail' result.competitionid %}" class="text-teal-500 hover:text-teal-700 transition duration-300 ease-in-out">
+                                {{ result.competitionid }}
+                            </a>
+                        </td>
+                        <td class="py-3 px-6 border-b border-gray-200">{{ result.formatted_best }}</td>
+                        <td class="py-3 px-6 border-b border-gray-200">{{ result.formatted_average }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="mt-4">No results found.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('edit-profile-btn').addEventListener('click', function() {
+        var form = document.getElementById('edit-profile-form');
+        if (form.classList.contains('hidden')) {
+            form.classList.remove('hidden');
+        } else {
+            form.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}
